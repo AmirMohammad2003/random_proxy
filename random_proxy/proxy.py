@@ -1,3 +1,5 @@
+from aiohttp_proxy import ProxyType
+
 from random_proxy.utils import check_proxy_health
 
 
@@ -20,15 +22,15 @@ class BaseProxy:
         for argname, arg in kwargs.items():
             setattr(self, argname, arg)
 
-        self.type: str = "https" if self.https else "http"
+        self.type: str = ProxyType.HTTPS if self.https else ProxyType.HTTP
 
     @property
     def url(self) -> str:
         return f"{self.ip}:{self.port}"
 
-    def check_health(self, test_url=None, timeout=None) -> bool:
+    async def _check_health(self, test_url=None, timeout=None) -> bool:
         self.verified = True
-        if check_proxy_health(self, test_url, timeout):
+        if await check_proxy_health(self, test_url, timeout):
             self.working = True
 
         else:

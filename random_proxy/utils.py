@@ -1,4 +1,6 @@
 import requests
+import aiohttp
+from aiohttp_proxy import ProxyConnector
 from requests import Response
 from requests.adapters import HTTPAdapter
 
@@ -19,7 +21,11 @@ def get_page(url: str, proxies: list[str] = None) -> Response:
         return session.get(url, headers={"User-Agent": "Mozilla/5.0"}, proxies=proxies)
 
 
-def check_proxy_health(proxy, test_url: str = None, timeout: int = None) -> bool:
+async def check_proxy_health(
+    proxy,  # type: ignore[Proxy]
+    test_url: str = None,
+    timeout: int = None,
+) -> bool:
     """
     Check the proxy health.
     """
@@ -29,22 +35,26 @@ def check_proxy_health(proxy, test_url: str = None, timeout: int = None) -> bool
     if timeout is None:
         timeout = 1
 
+    connector = ProxyConnector(
+        proxy_type=proxy.type,
+        host=proxy.ip,
+        port=proxy.port,
+    )
+
     try:
-        res = requests.get(
-            test_url,
+        async with aiohttp.ClientSession(
+            connector=connector,
             headers={
-                "User-Agent": "Mozilla/5.0",
                 "Accept": "*/*",
             },
-            proxies={
-                "http": f"http://{proxy.ip}:{proxy.port}",
-                "https": f"http://{proxy.ip}:{proxy.port}",
-            },
-            timeout=timeout,
-        )
-        if res.status_code == 200:
-            return True
+        ) as session:
+            async with session.get(
+                test_url,
+                timeout=timeout,
+            ) as res:
+                if res.status == 200:
+                    return True
 
-    except:
-        pass
+    except Exception as e:
+        print(e)
     return False

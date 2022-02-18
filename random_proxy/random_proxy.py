@@ -40,10 +40,6 @@ class RandomProxy(object):
             self.proxy_query += provider.get_proxy_query()
 
         if self.verify:
-            self.verify_proxies()
+            self.proxy_query.check_health(self.test_url, self.timeout)
 
         return self.proxy_query
-
-    def verify_proxies(self) -> None:
-        for proxy in self.proxy_query:
-            proxy.check_health(self.test_url, self.timeout)

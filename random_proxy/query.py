@@ -1,6 +1,9 @@
+import asyncio
 import random
 from datetime import datetime
 from typing import Callable, Union
+
+import aiohttp
 
 from random_proxy.proxy import Proxy
 
@@ -10,10 +13,17 @@ class ProxyQuery:
         self._proxy_list: list[Proxy] = proxy_list
         self.created_at = datetime.now()
 
-    def check_health(self, test_url=None, timeout=None) -> "ProxyQuery":
+    async def _check_health(self, test_url=None, timeout=None) -> "ProxyQuery":
+        tasks = []
         for proxy in self._proxy_list:
-            proxy.check_health(test_url, timeout)
+            tasks.append(asyncio.ensure_future(proxy._check_health(test_url, timeout)))
+        await asyncio.gather(*tasks)
+        return self
 
+    def check_health(self, test_url=None, timeout=None) -> "ProxyQuery":
+        asyncio.get_event_loop().run_until_complete(
+            self._check_health(test_url, timeout)
+        )
         return self
 
     def filter(  # TODO: change how this method works.
@@ -125,7 +135,7 @@ class ProxyQuery:
         return ProxyQuery(sorted(self._proxy_list, key=lambda x: getattr(x, attribute)))
 
     def random(self) -> Proxy:
-        if self._proxy_list is None:
+        if self._proxy_list is None or len(self._proxy_list) == 0:
             return None
 
         return random.choice(self._proxy_list)
