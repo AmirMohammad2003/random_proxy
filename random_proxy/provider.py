@@ -1,5 +1,7 @@
 from typing import Callable
 
+from aiohttp import ClientSession
+
 from random_proxy.query import ProxyQuery
 from random_proxy.utils import get_page
 
@@ -17,12 +19,16 @@ class Provider:
         else:
             raise TypeError(f"extractor must be callable")
 
-    def extract(self, proxies) -> ProxyQuery:
+    async def extract(self, session: ClientSession) -> None:
         if self.extractor is None:
             raise ValueError(f"extractor must be set")
 
-        res = get_page(self.url, proxies)
-        self.proxies_query = self.extractor(res)
+        res = await get_page(self.url, session)
+        if res is not None:
+            try:
+                self.proxies_query = self.extractor(res)
+            except Exception as e:
+                print(f"Error extracting proxies from {self.url}: {e}")
 
     def get_proxy_query(self) -> ProxyQuery:
         return self.proxies_query

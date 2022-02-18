@@ -3,8 +3,6 @@ import random
 from datetime import datetime
 from typing import Callable, Union
 
-import aiohttp
-
 from random_proxy.proxy import Proxy
 
 

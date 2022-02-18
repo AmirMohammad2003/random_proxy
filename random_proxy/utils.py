@@ -1,24 +1,26 @@
-import requests
-import aiohttp
+from typing import Any, Coroutine, Union
+
+from aiohttp import ClientSession
 from aiohttp_proxy import ProxyConnector
-from requests import Response
-from requests.adapters import HTTPAdapter
 
 from random_proxy.config import TEST_URL
 
 
-def get_page(url: str, proxies: list[str] = None) -> Response:
+async def get_page(
+    url: str, session: ClientSession
+) -> Union[Coroutine[Any, Any, str], None]:
     """
     Get the page from the url.
     """
-    if proxies is None:
-        proxies = {}
+    async with session.get(
+        url,
+        headers={"User-Agent": "Mozilla/5.0"},
+        timeout=10,
+    ) as response:
+        if response.status == 200:
+            return await response.text()
 
-    with requests.Session() as session:
-        adaper = HTTPAdapter(max_retries=3)
-        session.mount("http://", adaper)
-        session.mount("https://", adaper)
-        return session.get(url, headers={"User-Agent": "Mozilla/5.0"}, proxies=proxies)
+    return None
 
 
 async def check_proxy_health(
@@ -42,7 +44,7 @@ async def check_proxy_health(
     )
 
     try:
-        async with aiohttp.ClientSession(
+        async with ClientSession(
             connector=connector,
             headers={
                 "Accept": "*/*",
