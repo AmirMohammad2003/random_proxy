@@ -1,5 +1,8 @@
 proxy\_random
 =============
+.. image:: https://readthedocs.org/projects/proxy-random/badge/?version=latest
+        :target: https://proxy-random.readthedocs.io/en/latest/?badge=latest
+        :alt: Documentation Status
 
 **Proxy Random** is a tool to help small web scrapers. helping them prevent getting their ip banned from the target site.
 
