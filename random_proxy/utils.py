@@ -57,6 +57,7 @@ async def check_proxy_health(
                 if res.status == 200:
                     return True
 
-    except Exception as e:
-        print(e)
+    except Exception:
+        pass
+
     return False
