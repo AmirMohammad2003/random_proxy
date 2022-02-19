@@ -17,6 +17,7 @@ Usage
 here are some examples on how to use proxy-random.
 
 **Example 1:**
+
 .. code-block:: python
 
     import requests
@@ -43,7 +44,9 @@ here are some examples on how to use proxy-random.
 ProxyQuery(s) are reusable so you can filter them as many times as needed.
 
 here is another example of how to add custom providers
+
 **Example 2:**
+
 .. code-block:: python
 
     import requests
@@ -104,6 +107,7 @@ here is another example of how to add custom providers
     ...
 
 **My own usage of this package:**
+
 .. code-block:: python
 
     import requests
