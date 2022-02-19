@@ -1,4 +1,6 @@
 import asyncio
+import random
+import time
 from typing import Union
 
 from aiohttp import ClientSession, TCPConnector
@@ -19,6 +21,7 @@ class RandomProxy(object):
         use_defaults: bool = True,
         proxy: str = None,
     ) -> None:
+        random.seed(time.time())
         if use_defaults:
             self.proxy_providers: list[Provider] = [
                 Provider(HTTP_PROXY_URL, parse_response),
