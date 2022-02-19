@@ -7,6 +7,6 @@ setup(
     name="random_proxy",
     version=__version__,
     author="AmirMohammad Ghadimi",
-    description="A simple package to get random proxy from a online proxylist sites.",
+    description="A simple package to get random proxy from online proxylist sites.",
     packages=find_packages(),
 )
