@@ -5,7 +5,7 @@ with open("README.rst", "r", encoding="utf-8") as fh:
 
 setup(
     name="proxy_random",
-    version="0.0.1",
+    version="0.0.2",
     author="AmirMohammad",
     author_email="amirmohammad@duck.com",
     description="A simple package to get random proxy from online proxylist sites.",
