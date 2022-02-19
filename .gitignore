@@ -3,3 +3,6 @@ __pycache__
 __main__.py
 Pipfile
 Pipfile.lock
+build
+dist
+proxy_random.egg-info

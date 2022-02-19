@@ -1,17 +1,12 @@
-from typing import Any, Coroutine, Union
+from typing import Union
 
 from aiohttp import ClientSession
 from aiohttp_proxy import ProxyConnector
 
-from random_proxy.config import TEST_URL
+from proxy_random.config import TEST_URL
 
 
-async def get_page(
-    url: str, session: ClientSession
-) -> Union[Coroutine[Any, Any, str], None]:
-    """
-    Get the page from the url.
-    """
+async def get_page(url: str, session: ClientSession) -> Union[str, None]:
     async with session.get(
         url,
         headers={"User-Agent": "Mozilla/5.0"},
@@ -28,14 +23,11 @@ async def check_proxy_health(
     test_url: str = None,
     timeout: int = None,
 ) -> bool:
-    """
-    Check the proxy health.
-    """
     if test_url is None:
         test_url = TEST_URL
 
     if timeout is None:
-        timeout = 1
+        timeout = 5
 
     connector = ProxyConnector(
         proxy_type=proxy.type,

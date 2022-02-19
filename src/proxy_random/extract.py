@@ -1,12 +1,12 @@
 from bs4 import BeautifulSoup
 
-from random_proxy.proxy import Proxy
-from random_proxy.query import ProxyQuery
+from proxy_random.proxy import Proxy
+from proxy_random.query import ProxyQuery
 
 
 def parse_response(response: str) -> ProxyQuery:
     """
-    built-in parser for built-in proxy providers.
+    built-in parser for default proxy providers.
     """
     soup = BeautifulSoup(response, "html.parser")
 
