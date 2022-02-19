@@ -11,6 +11,9 @@ Installation
 
     $ pip install proxy-random
 
+Documentation
+-------------
+https://proxy-random.readthedocs.io/
 
 Usage
 -----
