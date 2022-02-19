@@ -12,14 +12,14 @@ class BaseProxy:
 
     def __init__(
         self,
-        ip: str,
-        port: int,
-        country_code: str,
-        country: str,
-        anonymity: str,
-        google: bool,
-        https: bool,
-        last_checked: str,
+        ip: str=None,
+        port: int=None,
+        country_code: str=None,
+        country: str=None,
+        anonymity: str=None,
+        google: bool=None,
+        https: bool=None,
+        last_checked: str=None,
         **kwargs,
     ) -> None:
         """BaseProxy constructor, Don't use this class directly, instead use the Proxy class.
