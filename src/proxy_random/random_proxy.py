@@ -5,7 +5,7 @@ contains the main class to manage providers and proxies.
 import asyncio
 import random
 import time
-from typing import Union
+from typing import List, Union
 
 from aiohttp import ClientSession, TCPConnector
 from aiohttp_proxy import ProxyConnector
@@ -42,7 +42,7 @@ class RandomProxy(object):
         """
         random.seed(time.time())
         if use_defaults:
-            self.proxy_providers: list[Provider] = [
+            self.proxy_providers: List[Provider] = [
                 Provider(HTTP_PROXY_URL, parse_response),
                 Provider(HTTPS_PROXY_URL, parse_response),
             ]

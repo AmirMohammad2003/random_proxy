@@ -4,7 +4,7 @@ contains the class used to query fetched proxies
 import asyncio
 import random
 from datetime import datetime
-from typing import Callable, Union, Optional
+from typing import Callable, List, Optional, Union
 
 from proxy_random.proxy import Proxy
 
@@ -12,12 +12,12 @@ from proxy_random.proxy import Proxy
 class ProxyQuery:
     """ProxyQuery class used to work with fetched proxies."""
 
-    def __init__(self, proxy_list: list[Proxy]) -> None:
+    def __init__(self, proxy_list: List[Proxy]) -> None:
         """
         :param proxy_list: list of proxies
         :type proxy_list: list[Proxy]
         """
-        self._proxy_list: list[Proxy] = proxy_list
+        self._proxy_list: List[Proxy] = proxy_list
         self.created_at = datetime.now()
 
     async def _check_health(self, test_url=None, timeout=None) -> "ProxyQuery":
@@ -55,18 +55,18 @@ class ProxyQuery:
     def filter(  # TODO: change how this method works.
         self,
         ip: Optional[str] = None,  # kinda useless
-        port: Optional[Union[int, list[int]]] = None,
-        country_code: Optional[Union[str, list[str]]] = None,
-        country: Optional[Union[str, list[str]]] = None,
-        anonymity: Optional[Union[str, list[str]]] = None,
+        port: Optional[Union[int, List[int]]] = None,
+        country_code: Optional[Union[str, List[str]]] = None,
+        country: Optional[Union[str, List[str]]] = None,
+        anonymity: Optional[Union[str, List[str]]] = None,
         google: Optional[bool] = None,
         https: Optional[bool] = None,
         verified: Optional[bool] = None,
         working: Optional[bool] = None,
         last_checked: Optional[
-            Union[str, list[str]]
+            Union[str, List[str]]
         ] = None,  # kinda dumb 'cause it's not parsed yet.
-        custom_filters: Union[Callable, list[Callable]] = None,
+        custom_filters: Union[Callable, List[Callable]] = None,
     ) -> "ProxyQuery":
         """method used to filter the proxies.
 
@@ -91,7 +91,7 @@ class ProxyQuery:
         :return: returns a new ProxyQuery with filtered proxies
         :rtype: ProxyQuery
         """
-        filters: list[Callable] = []
+        filters: List[Callable] = []
         if ip is not None:
             filters.append(lambda x: x.ip == ip)
 
@@ -166,7 +166,7 @@ class ProxyQuery:
 
         return self._filter(filters)
 
-    def _filter(self, filters: list[Callable]) -> "ProxyQuery":
+    def _filter(self, filters: List[Callable]) -> "ProxyQuery":
         """the internal method used to filter the proxies based on the given filters.
         don't use this method directly.
 
