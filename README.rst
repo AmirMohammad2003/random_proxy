@@ -115,10 +115,8 @@ here is another example of how to add custom providers
     from proxy_random import RandomProxy
 
     rp = RandomProxy(proxy="my proxy")
-    proxies = rp.extract_proxies() # you can also use rp.proxy_query.
+    proxies = rp.extract_proxies()
 
-    # filter the US proxies which use port 80 or 443 and check if they work
-    # you can filter by multiple parameters at once or provide your own filter function(s)
     workings = proxies.filter(custom_filters=[lambda x: x.country_code != "ir",]) \
                 .limit(50).check_health(timeout=5).filter(working=True)
 
